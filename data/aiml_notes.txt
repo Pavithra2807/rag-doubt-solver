@@ -1,0 +1,147 @@
+AI/ML FUNDAMENTALS NOTES
+
+1. WHAT IS MACHINE LEARNING
+Machine Learning (ML) is a subset of Artificial Intelligence where systems learn patterns from data rather than being explicitly programmed with rules. Instead of hardcoding logic, we feed data to an algorithm, and it learns a function that maps inputs to outputs.
+
+Types of Machine Learning:
+- Supervised Learning: The model learns from labeled data (input-output pairs). Examples: classification (spam detection), regression (price prediction).
+- Unsupervised Learning: The model finds patterns in unlabeled data. Examples: clustering (customer segmentation), dimensionality reduction (PCA).
+- Reinforcement Learning: An agent learns by interacting with an environment, receiving rewards or penalties for actions. Examples: game-playing AI, robotics.
+
+2. SUPERVISED LEARNING IN DEPTH
+In supervised learning, we split data into features (X) and labels (y). The model learns a mapping f(X) = y during training, then predicts y for new, unseen X.
+
+Classification vs Regression:
+- Classification predicts discrete categories (e.g., spam/not spam, cat/dog/bird).
+- Regression predicts continuous numeric values (e.g., house price, temperature).
+
+Common algorithms:
+- Linear Regression: fits a straight line to predict continuous values by minimizing squared error.
+- Logistic Regression: despite the name, used for classification; outputs probabilities using the sigmoid function.
+- Decision Trees: split data based on feature values to make predictions, easy to interpret.
+- Random Forest: an ensemble of many decision trees, reduces overfitting by averaging predictions.
+- Support Vector Machines (SVM): finds the optimal boundary (hyperplane) that separates classes with maximum margin.
+- K-Nearest Neighbors (KNN): classifies a point based on the majority class among its k closest neighbors.
+
+3. OVERFITTING AND UNDERFITTING
+Overfitting occurs when a model learns the training data too well, including its noise, and performs poorly on new/unseen data. Signs: very high training accuracy, low test accuracy.
+
+Underfitting occurs when a model is too simple to capture the underlying pattern in the data. Signs: low accuracy on both training and test data.
+
+Ways to reduce overfitting:
+- Use more training data
+- Regularization (L1/L2 penalties on model weights)
+- Cross-validation
+- Simplify the model (fewer features/parameters)
+- Dropout (in neural networks)
+- Early stopping during training
+
+4. BIAS-VARIANCE TRADEOFF
+Bias is the error from overly simplistic assumptions in the model (leads to underfitting). Variance is the error from the model being too sensitive to small fluctuations in training data (leads to overfitting). The goal is to find a balance — a model complex enough to capture patterns but not so complex it memorizes noise.
+
+5. GRADIENT DESCENT
+Gradient descent is an optimization algorithm used to minimize a model's loss function. It works by calculating the gradient (slope) of the loss with respect to model parameters, then updating parameters in the direction that reduces loss.
+
+Formula: new_weight = old_weight - learning_rate * gradient
+
+Learning rate controls step size:
+- Too high: may overshoot the minimum, fail to converge
+- Too low: converges very slowly
+
+Variants:
+- Batch Gradient Descent: uses the entire dataset per update
+- Stochastic Gradient Descent (SGD): uses one sample per update, faster but noisier
+- Mini-batch Gradient Descent: uses small batches, a practical middle ground
+
+6. NEURAL NETWORKS BASICS
+A neural network consists of layers of interconnected nodes (neurons). Each connection has a weight, and each neuron applies an activation function to its weighted input sum.
+
+Structure:
+- Input layer: receives raw features
+- Hidden layer(s): learn intermediate representations
+- Output layer: produces final prediction
+
+Activation functions:
+- ReLU (Rectified Linear Unit): outputs 0 for negative inputs, input value for positive — most common in hidden layers, avoids vanishing gradient issues
+- Sigmoid: squashes output between 0 and 1, useful for binary classification output
+- Softmax: converts outputs into probabilities across multiple classes, used in multi-class classification output layers
+
+Backpropagation: the algorithm used to train neural networks. It calculates the gradient of the loss with respect to each weight by propagating the error backward from output to input layer, then updates weights via gradient descent.
+
+7. CONVOLUTIONAL NEURAL NETWORKS (CNNs)
+CNNs are specialized neural networks for processing grid-like data such as images. Key components:
+- Convolutional layers: apply filters/kernels that slide over the image to detect features like edges, textures
+- Pooling layers: downsample feature maps (e.g., max pooling) to reduce dimensionality and computation
+- Fully connected layers: at the end, combine extracted features to make final predictions
+
+CNNs are effective for images because they preserve spatial relationships and use fewer parameters than fully connected networks (via weight sharing in filters).
+
+8. NATURAL LANGUAGE PROCESSING (NLP) BASICS
+NLP is the field focused on enabling machines to understand and generate human language.
+
+Key concepts:
+- Tokenization: splitting text into smaller units (words, subwords)
+- Embeddings: dense vector representations of words/tokens that capture semantic meaning (e.g., Word2Vec, GloVe)
+- Stop words: common words (like "the", "is") often removed during preprocessing
+- Stemming/Lemmatization: reducing words to their root form
+
+9. TRANSFORMERS AND ATTENTION
+Transformers are a neural network architecture that revolutionized NLP, introduced in the paper "Attention is All You Need."
+
+Key idea: Self-attention mechanism — allows the model to weigh the importance of different words in a sequence relative to each other, regardless of their distance apart. This solves the long-range dependency problem that RNNs struggled with.
+
+Key components:
+- Self-attention: computes relationships between all words in a sequence simultaneously
+- Multi-head attention: runs several attention mechanisms in parallel to capture different types of relationships
+- Positional encoding: since transformers process all tokens at once (not sequentially), positional encoding injects information about word order
+
+Transformers are the foundation of models like BERT, GPT, and other modern LLMs.
+
+10. LARGE LANGUAGE MODELS (LLMs)
+LLMs are transformer-based models trained on massive text corpora to predict the next token in a sequence. Through this simple objective at scale, they learn grammar, facts, reasoning patterns, and more.
+
+Key concepts:
+- Pretraining: training on large, general text data to learn language patterns
+- Fine-tuning: further training on a smaller, task-specific dataset to specialize the model
+- Prompt engineering: crafting input text (prompts) to guide the model toward desired outputs, without changing model weights
+- Context window: the maximum amount of text (tokens) a model can consider at once
+- Temperature: a parameter controlling randomness in output generation — low temperature gives more deterministic/focused answers, high temperature gives more varied/creative answers
+
+11. EMBEDDINGS (FOR RAG)
+Embeddings are numerical vector representations of text (or other data) that capture semantic meaning. Texts with similar meaning have embeddings that are close together in vector space, typically measured using cosine similarity.
+
+In RAG systems, embeddings are used to:
+- Convert document chunks into vectors and store them in a vector database
+- Convert a user's query into a vector
+- Find the document chunks whose embeddings are most similar to the query embedding (nearest neighbor search)
+
+12. RETRIEVAL-AUGMENTED GENERATION (RAG)
+RAG combines information retrieval with text generation. Instead of relying solely on what an LLM learned during training, RAG retrieves relevant external documents at query time and feeds them into the model's context to generate a grounded, accurate answer.
+
+RAG Pipeline steps:
+1. Chunking: split source documents into smaller pieces (e.g., 200-500 words) so they fit well in context and retrieval is precise
+2. Embedding: convert each chunk into a vector using an embedding model
+3. Storage: store chunk vectors in a vector database (e.g., FAISS, ChromaDB, Pinecone)
+4. Retrieval: when a query comes in, embed the query and search the vector database for the most similar chunks
+5. Augmentation: insert the retrieved chunks into the prompt as context
+6. Generation: the LLM generates an answer using both the query and the retrieved context
+
+Why RAG matters: it reduces hallucination (making up facts), allows the model to answer questions about private/custom data it was never trained on, and doesn't require expensive retraining to update knowledge — you just update the document store.
+
+13. VECTOR DATABASES
+A vector database stores embeddings and enables fast similarity search (finding the "nearest" vectors to a query vector). Common options:
+- FAISS (Facebook AI Similarity Search): a library for efficient similarity search, runs locally, free
+- ChromaDB: an open-source, easy-to-use vector database, popular for small-to-medium RAG projects
+- Pinecone: a managed, cloud-based vector database, good for production scale
+
+14. COMMON EVALUATION METRICS
+Classification metrics:
+- Accuracy: percentage of correct predictions overall
+- Precision: of all predicted positives, how many were actually positive (TP / (TP+FP))
+- Recall: of all actual positives, how many were correctly predicted (TP / (TP+FN))
+- F1 Score: harmonic mean of precision and recall, useful when classes are imbalanced
+
+Regression metrics:
+- Mean Absolute Error (MAE): average absolute difference between predicted and actual values
+- Mean Squared Error (MSE): average squared difference, penalizes larger errors more
+- R-squared: proportion of variance in the target explained by the model
